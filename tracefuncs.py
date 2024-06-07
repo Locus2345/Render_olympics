@@ -1,6 +1,8 @@
 import multiprocessing as mp
 import time
 
+import numpy as np
+
 from lib import *
 
 
@@ -34,48 +36,68 @@ def getlighting(point: np.ndarray, normal: np.ndarray, viewVector: np.ndarray, s
     return intensity
 
 
-def trace(ray, bckgr: np.ndarray, lights: list[Light], spheres: list[Sphere], torii: list[Torus]) -> np.ndarray:
+def intersect_closest(ray, tmin, spheres: list[Sphere], torii: list[Torus]):
     mindist = inf
     closest = None
     for sphere in spheres:
-        distance = sphere.collide(ray)
+        distance = sphere.collide(ray, tmin)
         if distance < mindist:
             mindist = distance
             closest = sphere
     for torus in torii:
-        distance = torus.collide(ray)
+        distance = torus.collide(ray, tmin)
         if distance < mindist:
             mindist = distance
             closest = torus
+    return closest, mindist
+
+
+def trace(ray, bckgr: np.ndarray, lights: list[Light], spheres: list[Sphere], torii: list[Torus], tmin, depth):
+    closest, mindist = intersect_closest(ray, tmin, spheres, torii)
     if closest is None:
-        return bckgr
+        return None
     point = ray[0] + mindist * ray[1]
-    intensity = min(getlighting(point, closest.normal(point), ray[1], closest.shininess, lights), 1)
-    return closest.colour * intensity
+    normal = closest.normal(point)
+    intensity = min(getlighting(point, normal, ray[1], closest.shininess, lights), 1)
+    if depth == 0:
+        return closest.colour * intensity
+    else:
+        reflec = np.random.normal(3)
+        reflec /= np.linalg.norm(reflec)
+        reflec *= copysign(1, np.dot(reflec, normal))
+        newray = np.array([point, reflec])
+        return trace(newray, bckgr, lights, spheres, torii, 0.001, depth-1)
 
 
-def getpixel(rpp, ray, bckgr, lights, spheres, torii):
+def getpixel(rpp, ray, bckgr, lights, spheres, torii, depth):
     colour = np.array([0.0, 0.0, 0.0])
     for n in range(rpp):
-        colour += trace(ray, bckgr, lights, spheres, torii).real
+        colour += trace(ray, bckgr, lights, spheres, torii, 1, depth).real
     colour /= rpp
     return colour
 
 
-def dispatched(num_assigned, index, qeu: mp.Queue, res, rpp, rays, bckgr, lights, spheres, torii):
+def dispatched(num_assigned, index, qeu: mp.Queue, res, rpp, rays, bckgr, lights, spheres, torii, depth):
     print(index, "started")
     start = num_assigned * index
+    count = 0
     for clmn in range(start, start + num_assigned):
+        if index == 0:
+            progress = floor(80*count/num_assigned)
+            remain = 80 - progress
+            print(("\rProcess 0 progess: [" + progress*"#" + remain*"-" + "]"), end='')
+            count += 1
         for y in range(res[1]):
-            qeu.put(getpixel(rpp, rays[clmn, y], bckgr, lights, spheres, torii))
-    print("finito", index)
+            qeu.put(getpixel(rpp, rays[clmn, y], bckgr, lights, spheres, torii, depth))
+    print("Process", index, "has finished")
 
 
-def render(scene, focusdist, camera_pos, rpp, rotZ, rotY, focus, res: tuple):
+def render(scene, focusdist, camera_pos, rpp, rotZ, rotY, focus, res: tuple, depth):
     # setup scene objects
-    spheres: list[Sphere] = scene[0]
-    torii: list[Torus] = scene[1]
-    lights: list[Light] = scene[2]
+    bckgr = scene[0]
+    spheres: list[Sphere] = scene[1]
+    torii: list[Torus] = scene[2]
+    lights: list[Light] = scene[3]
 
     # output object
     framebuffer = np.zeros((res[0], res[1], 3))
@@ -128,7 +150,7 @@ def render(scene, focusdist, camera_pos, rpp, rotZ, rotY, focus, res: tuple):
     for pnum in range(nprocesses):
         queues.append(mp.Queue())
         processes.append(mp.Process(target=dispatched, args=(
-            clmns_assigned, index, queues[-1], res, rpp, rays, bckgr, lights, spheres, torii)))
+            clmns_assigned, index, queues[-1], res, rpp, rays, bckgr, lights, spheres, torii, depth)))
         print(index)
         index += 1
 

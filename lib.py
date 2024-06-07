@@ -11,17 +11,18 @@ def normalise_ra(ray_array):
 
 
 class Sphere:
-    def __init__(self, r, origin: np.ndarray, colour: np.ndarray, shininess: float):
+    def __init__(self, r, origin: np.ndarray, colour: np.ndarray, shininess: float, luminance: float):
         self.origin = origin
         self.r = r
         self.colour = colour
         self.shininess = shininess
+        self.luminance = luminance
 
     def normal(self, p: np.ndarray):
         rad = p - self.origin
         return rad / np.linalg.norm(rad)
 
-    def collide(self, ray):
+    def collide(self, ray, tmin):
         A = np.dot(ray[1], ray[1])
         co = ray[0] - self.origin
         B = 2 * np.dot(co, ray[1])
@@ -31,15 +32,15 @@ class Sphere:
             return inf
         elif D == 0:
             distance = -B / (2 * A)
-            if distance >= 1:
+            if distance >= tmin:
                 return distance
         else:
             distance = (-B - sqrt(D)) / (2 * A)
-            if distance >= 1:
+            if distance >= tmin:
                 return distance
             else:
                 distance = (-B - sqrt(D)) / (2 * A)
-                if distance >= 1:
+                if distance >= tmin:
                     return distance
         return inf
 
@@ -64,7 +65,7 @@ class Torus:
         norm = p - circlePoint
         return norm/np.linalg.norm(norm)
 
-    def collide(self, ray):
+    def collide(self, ray, tmin):
         """
         This function does not work. the quartic does get solved correctly (thanks to NKrvavica's MIT licensed code),
         only THE QUARTIC IS WRONG.
@@ -126,9 +127,9 @@ class Torus:
                 if Discr < 0:
                     return inf
                 x1, x2 = (-D + sqrt(Discr))/(2*C), (-D - sqrt(Discr))/(2*C)
-                if x2 >= 1:
+                if x2 >= tmin:
                     return x2
-                elif x1 >= 1:
+                elif x1 >= tmin:
                     return x1
                 return inf
         roots = single_quartic(A, B, C, D, E)
@@ -139,7 +140,7 @@ class Torus:
                 realroots.append(float(root.real))
         realroots.sort()
         for realroot in realroots:
-            if realroot >= 1:
+            if realroot >= tmin:
                 return realroot
         return inf
 
