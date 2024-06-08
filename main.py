@@ -109,6 +109,7 @@ if __name__ == '__main__':
                   "and thus is very noisy due to randomness. Therefore, multiple rays are sent per pixel, \n"
                   "and their colour is averaged. More rays per pixel (rpp) is smoother image, \nbut "
                   "you effectively multiply the time to render by rpp.\n")
+            print("Please read the README if you haven't already\n")
             raw = input((BLUE + "Use path tracing? [yes/no] : " + ENDC))
             print("")
             if quittest(raw):
