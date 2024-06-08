@@ -9,6 +9,8 @@ I originally did not read the competition regulations fully, and started of usin
 
 I'm quite sad my implementation of the torus didn't work out, because that was the bit of code has been done already by the lowest number of people, and it's also the challenge I enjoyed the most until I had verified that all things were as they should be exept the fact that it doesn't work. When testing with a torus at (5, 0, 0) with major radius 2 and minor radius 1, and a ray from (0, 2, 0) with direction (1, 0, 0), it spits out a polynomial which it solves correctly to four imaginary roots. It should be a polynomial with the two real roots 4 and 6, and two imaginary roots. But, as I explain in the docstring in the relevant file, it doesn't work and it should work.
 
+This project can be found online at https://github.com/ianic-dev/Render_olympics
+
 ## Code explanation
 
 The main thing necessary to understand the code is the data structure I use for a ray. It's a numpy.ndarray of shape (2, 3), interpreted as one vector to the origin of the ray and one unit vector as the direction. So ray[0] is the camera, and then the bouncepoint for bounced light, and ray[1] is the direction the light is going. 
@@ -28,3 +30,7 @@ The <i>multiprocessing</i> module is used to parallelise a bit, but you're still
 The default camera looks in the positive x direction, with positive y being up and positive z being right. Scene 3 is essentially made for playing around with rotation on the Y axis, and for most of the scenes you'll find a sun-like light source above you (use z rotation to look up). I would strongly recommend trying out some camera positions and rotations to explore scene 3.
 
 The parameters recommended for a final showoff render are: scene 2, resolution of 360x360, 256 rays per pixel, depth of 6. If you have way too much time you can use 512 or higher at 720x720 and go do something else while it renders. The png is from when I rendered that, and it took about an hour. The progress bar shows process 5 as that handles pixels closer to the centre of the screen, which tend to take longer as there is more stuff there. Scene 2 is supposed to be the olympic rings, if it wasn't obvious. They would definitely be better as actual rings.
+
+## Conclusion
+
+Well, here it is. My first actual coding project. I've got some ideas lined up for future free time, mostly learning C, interfacing with API's and building a tui. I'll probably come back to this project in the future, but I will definitely be running a statically typed language. You'll probably have guessed that I was dead set on doing this the moment I heard about the competition, and the olympics part was shoehorned in later. Although it didn't work out in the end, I did enjoy playing with tori. You can insert "Torus(0.5, 2, np.array([1, 0, 0]), np.array([9, -.5, 2]), np.array([30, 140, 200]), 10, 0)" at (65, 16) in <i>main.py</i> to see something broken. It tends to just not show, but I think you can probably spot something off.

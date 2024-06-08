@@ -39,7 +39,7 @@ class Sphere:
 
 
 class Torus:
-    def __init__(self, r: float, R: float, directoin: np.ndarray, origin: np.ndarray, colour: np.ndarray, shininess: float):
+    def __init__(self, r: float, R: float, directoin: np.ndarray, origin: np.ndarray, colour: np.ndarray, shininess: float, luminance: float):
         self.origin = origin
         self.x_ = directoin
         self.y_ = np.linalg.cross(np.array([0, 0, 1]), directoin)
@@ -49,6 +49,7 @@ class Torus:
         self.R = R
         self.colour = colour
         self.shininess = shininess
+        self.luminance = luminance
         # print(self.x_, self.y_, self.z_)
 
     def normal(self, p: np.ndarray):

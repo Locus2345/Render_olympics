@@ -1,7 +1,4 @@
 import contextlib
-import sys
-
-import numpy as np
 
 with contextlib.redirect_stdout(None):
     import pygame as pg
@@ -21,20 +18,20 @@ BOLD = '\033[1m'
 UNDERLINE = '\033[4m'
 
 
-def quittest(data: str):
-    data = data.strip()
-    if data == "q" or data == "quit":
+def quittest(datas: str):
+    datas = datas.strip()
+    if datas == "q" or datas == "quit":
         return True
     return False
 
 
-def yesno(data: str):
-    data = data.strip()
-    if data == "":
+def yesno(datas: str):
+    datas = datas.strip()
+    if datas == "":
         return -2
-    elif data.lower() in "yes":
+    elif datas.lower() in "yes":
         return 1
-    elif data.lower() in "no":
+    elif datas.lower() in "no":
         return 0
     return -1
 
