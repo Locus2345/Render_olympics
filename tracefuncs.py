@@ -129,7 +129,7 @@ def dispatched(num_assigned, index, qeu: mp.Queue, res, rpp, rays, bckgr, lights
     count = 0
     count2 = 0
     for clmn in range(start, start + num_assigned):
-        if index == 0:
+        if index == 5:
             count += 1
 
         for y in range(res[1]):
