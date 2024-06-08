@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="781d3d0e-c5e3-4e32-be9b-acb6a2d3aa64" name="Changes" comment="uhh">
+    <list default="true" id="781d3d0e-c5e3-4e32-be9b-acb6a2d3aa64" name="Changes" comment="before changes to lighting">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/REAME.md" beforeDir="false" afterPath="$PROJECT_DIR$/REAME.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib.py" beforeDir="false" afterPath="$PROJECT_DIR$/lib.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tracefuncs.py" beforeDir="false" afterPath="$PROJECT_DIR$/tracefuncs.py" afterDir="false" />
@@ -55,7 +56,8 @@
     "Python.test.executor": "Run",
     "Python.tracefuncs.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main"
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true"
   }
 }]]></component>
   <component name="RunManager">
@@ -122,12 +124,21 @@
       <option name="project" value="LOCAL" />
       <updated>1717780442920</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="before changes to lighting">
+      <option name="closed" value="true" />
+      <created>1717799434485</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1717799434485</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="first commit" />
     <MESSAGE value="uhh" />
-    <option name="LAST_COMMIT_MESSAGE" value="uhh" />
+    <MESSAGE value="before changes to lighting" />
+    <option name="LAST_COMMIT_MESSAGE" value="before changes to lighting" />
   </component>
 </project>

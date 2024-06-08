@@ -3,13 +3,6 @@ from math import *
 from quartlib import eps, single_quartic
 
 
-def normalise_ra(ray_array):
-    lengths = np.sqrt(np.sum(ray_array[:, :, 1] * ray_array[:, :, 1], -1))
-    ray_array[:, :, 1, 0] = ray_array[:, :, 1, 0] / lengths
-    ray_array[:, :, 1, 1] = ray_array[:, :, 1, 1] / lengths
-    ray_array[:, :, 1, 2] = ray_array[:, :, 1, 2] / lengths
-
-
 class Sphere:
     def __init__(self, r, origin: np.ndarray, colour: np.ndarray, shininess: float, luminance: float):
         self.origin = origin
